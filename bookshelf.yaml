@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookshelf-deployment
+  labels:
+    apps: bookshelf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bookshelf
+  template:
+    metadata:
+      labels:
+        app: bookshelf
+    spec:
+      containers:
+        - name: bookshelf
+          image: ghcr.io/wer153/bookshelf:main
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookshelf-service
+spec:
+  selector:
+    app: bookshelf
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
